@@ -1,1 +1,1 @@
-console.log('Test: OK');
+console.log('-> Test: OK <-');
