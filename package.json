@@ -1,0 +1,46 @@
+{
+  "name": "start-from-github",
+  "version": "0.0.1",
+  "description": "Download, install dependences and start a nodeJS project from GitHub",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "readme": "README.md",
+  "bin": {
+    "start-from-github": "./dist/main.js"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuizHenriqueKS/start-from-github.git"
+  },
+  "keywords": [
+    "start-from-github",
+    "github",
+    "nodejs"
+  ],
+  "author": "Zul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuizHenriqueKS/start-from-github/issues"
+  },
+  "homepage": "https://github.com/LuizHenriqueKS/start-from-github#readme",
+  "dependencies": {
+    "typescript": "^4.3.2",
+    "ts-node": "^10.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "eslint": "^7.27.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0"
+  }
+}
