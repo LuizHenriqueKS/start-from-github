@@ -1,6 +1,9 @@
 # Build files
 dist
 
+# Tests
+test_files
+
 # Logs
 logs
 *.log
