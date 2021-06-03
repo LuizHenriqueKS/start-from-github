@@ -13,12 +13,56 @@
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}\\src\\main.ts",
+      "args": [
+        "download"
+      ],
       "runtimeArgs": [
         "-r",
         "ts-node/register"
       ],
       "outFiles": [
         "${workspaceFolder}/**/*.js"
+      ]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "All tests",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceRoot}\\node_modules\\jest\\bin\\jest.js",
+      "args": [
+        "--runInBand"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Run a test",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceRoot}\\node_modules\\jest\\bin\\jest.js",
+      "args": [
+        "${fileBasename}",
+        "--runInBand"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
       ]
     }
   ]

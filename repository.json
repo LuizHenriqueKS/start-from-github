@@ -1,0 +1,7 @@
+{
+  "name": "hello-world",
+  "url": "https://github.com/LuizHenriqueKS/hello-world",
+  "preCommands": [],
+  "symlink": [],
+  "webhookPort": 8080
+}

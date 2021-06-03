@@ -3,6 +3,7 @@ dist
 
 # Tests
 test_files
+repositories
 
 # Logs
 logs

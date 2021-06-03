@@ -26,7 +26,9 @@ npm start-from-github up filename
 
 ```json
 {
+  "name": "name",
   "url": "github_repository_url",
+  "token": "token",
   "webhookPort": "port",
   "preCommands": [
     "npm run build"
@@ -39,10 +41,12 @@ npm start-from-github up filename
   ]
 }
 ```
-
+- name - A name for the repository
+- url - The project URL
+- token - (Optional) It's required for private projects. Read more: ...
 - webhookPort - (Optional) Port to start a http server to webhook
 - preCommands - (Optional) Commands to run before to start the project
-- startCommand - (Optional) Command to start the project. Default value is *npm start*
+- startCommand - (Optional) The command to start the project. Default value is *npm start*
 - symlink - (Optional) Symblinks for files to share with the project
 
 *Obs: you can use webhook to download latest version of the repository and to restart it.*
