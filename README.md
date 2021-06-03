@@ -34,9 +34,9 @@ npm start-from-github up filename
     "npm run build"
   ],
   "startCommand": "npm run launch",
-  "symlink": [
+  "symlinks": [
     {
-      "target": "destination"
+      "source": "destination"
     }
   ]
 }
@@ -47,7 +47,7 @@ npm start-from-github up filename
 - webhookPort - (Optional) Port to start a http server to webhook
 - preCommands - (Optional) Commands to run before to start the project
 - startCommand - (Optional) The command to start the project. Default value is *npm start*
-- symlink - (Optional) Symblinks for files to share with the project
+- symlinks - (Optional) Symblinks for files to share with the project
 
 *Obs: you can use webhook to download latest version of the repository and to restart it.*
 

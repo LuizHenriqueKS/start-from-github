@@ -5,7 +5,7 @@ interface RepositoryConfig {
   webhookPort?: number;
   preCommands?: string[];
   startCommand?: string;
-  symlink?: any[];
+  symlinks?: any[];
 }
 
 export default RepositoryConfig;

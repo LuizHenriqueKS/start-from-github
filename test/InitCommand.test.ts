@@ -1,13 +1,16 @@
 import fs from 'fs';
 import path from 'path';
 import defaultCommandManager from '../src/cmd/defaultCommandManager';
+import readJSONFile from '../src/util/readJSONFile';
+import getTestFilesDirectory from './getTestFilesDirectory';
+import unlinkIfExists from './unlinkIfExists';
 
 it('should create a config json file', async () => {
   const filePath = getFilePath();
   unlinkIfExists(filePath);
   const result = await defaultCommandManager.run({
     args: ['init'],
-    directory: getDirectory()
+    directory: getTestFilesDirectory()
   });
   const existed = fs.existsSync(filePath);
   unlinkIfExists(filePath);
@@ -20,7 +23,7 @@ it('should create a config json file with hello-name.json', async () => {
   unlinkIfExists(filePath);
   const result = await defaultCommandManager.run({
     args: ['init', 'hello-name.json'],
-    directory: getDirectory()
+    directory: getTestFilesDirectory()
   });
   const existed = fs.existsSync(filePath);
   unlinkIfExists(filePath);
@@ -28,20 +31,27 @@ it('should create a config json file with hello-name.json', async () => {
   expect(result.ok).toBeTruthy();
 });
 
-function unlinkIfExists(file: string) {
-  if (fs.existsSync(file)) {
-    fs.unlinkSync(file);
-  }
-}
+it('should create a config json file from a URL', async () => {
+  const filePath = getFilePath();
+  const url = 'https://github.com/LuizHenriqueKS/hello-world';
+  unlinkIfExists(filePath);
+  const result = await defaultCommandManager.run({
+    args: ['init', url],
+    directory: getTestFilesDirectory()
+  });
+  const existed = fs.existsSync(filePath);
+  expect(existed).toBeTruthy();
+  const config = readJSONFile(filePath);
+  expect(config.name).toBe('hello-world');
+  expect(config.url).toBe(url);
+  unlinkIfExists(filePath);
+  expect(result.ok).toBeTruthy();
+});
 
 function getFilePath(filename?: string): string {
   if (filename) {
-    return path.join(getDirectory(), filename);
+    return path.join(getTestFilesDirectory(), filename);
   } else {
-    return path.join(getDirectory(), 'repository.json');
+    return path.join(getTestFilesDirectory(), 'repository.json');
   }
-}
-
-function getDirectory(): string {
-  return path.resolve('./test_files/');
 }
