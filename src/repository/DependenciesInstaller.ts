@@ -22,9 +22,10 @@ class DependenciesInstaller {
     const repositoryVersion = loadRepositoryVersion(this.args, this.repositoryConfig);
     const repositoryDirectory = getDownloadedRepositoryDir(this.args.directory, repositoryVersion!);
     const dependenciesDirectory = path.join(repositoryDirectory, 'node_modules');
+    const out = this.args.out;
     if (!fs.existsSync(dependenciesDirectory)) {
       console.log('Installing dependencies...');
-      const command = runTerminalCommand('npm', { args: ['i'], cwd: repositoryDirectory });
+      const command = runTerminalCommand('npm', { args: ['i'], cwd: repositoryDirectory, out });
       await command.waitForClose();
     }
   }

@@ -14,7 +14,7 @@
       ],
       "program": "${workspaceFolder}\\src\\main.ts",
       "args": [
-        "dependencies"
+        "up"
       ],
       "runtimeArgs": [
         "-r",

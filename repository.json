@@ -2,6 +2,7 @@
   "name": "hello-world",
   "url": "https://github.com/LuizHenriqueKS/hello-world",
   "preCommands": [],
+  "startCommand": "npm start",
   "symlink": [
     {
       "data": "data"

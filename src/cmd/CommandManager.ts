@@ -26,8 +26,8 @@ class CommandManager {
     try {
       const commandName = rawArgs.args.length > 0 ? rawArgs.args[0] : '';
       const args: CommandArgs = {
-        args: [...rawArgs.args].slice(1),
-        directory: rawArgs.directory
+        ...rawArgs,
+        args: [...rawArgs.args].slice(1)
       };
       commandInfo = this.findCommandInfo(commandName);
       commandInfo = this.ifIsNullChangeToDefaultCommand(commandInfo);

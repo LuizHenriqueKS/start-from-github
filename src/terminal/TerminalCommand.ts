@@ -1,6 +1,7 @@
 import { ChildProcess } from 'child_process';
 
 class TerminalCommand {
+  out?: (data: string) => void;
   #childProcess: ChildProcess;
 
   constructor(childProcess: ChildProcess) {
@@ -11,12 +12,14 @@ class TerminalCommand {
     if (this.#childProcess.stdout) {
       this.#childProcess.stdout.on('data', (data) => {
         console.log(`${data}`);
+        if (this.out) this.out(`${data}`);
       });
     }
 
     if (this.#childProcess.stderr) {
       this.#childProcess.stderr.on('data', (data) => {
-        console.error(`${data}`);
+        console.log(`${data}`);
+        if (this.out) this.out(`${data}`);
       });
     }
 

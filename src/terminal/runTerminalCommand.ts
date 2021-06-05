@@ -9,6 +9,7 @@ function runTerminalCommand(command: string, options?: TerminalCommandOptions): 
   const childProcess = startCommand(command, args, cwd);
   const terminalCommand = new TerminalCommand(childProcess);
   terminalCommand.redirectOutputsToConsole();
+  terminalCommand.out = options?.out;
   return terminalCommand;
 }
 
