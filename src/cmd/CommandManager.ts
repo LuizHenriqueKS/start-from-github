@@ -2,7 +2,7 @@ import CommandAlreadyExistsError from '../error/CommandAlreadyExistsError';
 import CommandInfo from './CommandInfo';
 import Command from './Command';
 import CommandArgs from './CommandArgs';
-import CommandResult from './commandResult';
+import CommandResult from './CommandResult';
 import CommandNotFoundError from '../error/CommandNotFoundError';
 
 class CommandManager {
