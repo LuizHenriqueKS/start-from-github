@@ -1,4 +1,3 @@
-> Default command
 > Webhook
 > Test with private project
 > Test on Linux

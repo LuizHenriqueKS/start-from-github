@@ -24,4 +24,4 @@ it('should start the repository', async () => {
   } finally {
     await clearTestFiles();
   }
-});
+}, 10000);
