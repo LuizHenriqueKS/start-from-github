@@ -14,8 +14,9 @@ it('should start the repository', async () => {
     });
     const output = [''];
     const result = await defaultCommandManager.run({
+      commandName: 'up',
       directory,
-      args: ['up'],
+      args: [],
       out: data => (output[0] += data)
     });
     expect(result.ok).toBeTruthy();

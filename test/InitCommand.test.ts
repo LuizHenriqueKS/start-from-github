@@ -9,7 +9,8 @@ it('should create a config json file', async () => {
   const filePath = getFilePath();
   unlinkIfExists(filePath);
   const result = await defaultCommandManager.run({
-    args: ['init'],
+    commandName: 'init',
+    args: [],
     directory: getTestFilesDirectory()
   });
   const existed = fs.existsSync(filePath);
@@ -22,7 +23,8 @@ it('should create a config json file with hello-name.json', async () => {
   const filePath = getFilePath('hello-name.json');
   unlinkIfExists(filePath);
   const result = await defaultCommandManager.run({
-    args: ['init', 'hello-name.json'],
+    commandName: 'init',
+    args: ['hello-name.json'],
     directory: getTestFilesDirectory()
   });
   const existed = fs.existsSync(filePath);
@@ -36,7 +38,8 @@ it('should create a config json file from a URL', async () => {
   const url = 'https://github.com/LuizHenriqueKS/hello-world';
   unlinkIfExists(filePath);
   const result = await defaultCommandManager.run({
-    args: ['init', url],
+    commandName: 'init',
+    args: [url],
     directory: getTestFilesDirectory()
   });
   const existed = fs.existsSync(filePath);

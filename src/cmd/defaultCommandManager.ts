@@ -5,6 +5,7 @@ import DownloadCommand from './impl/DownloadCommand';
 import SymlinkCommand from './impl/SymlinkCommand';
 import DependenciesCommand from './impl/DependenciesCommand';
 import UpCommand from './impl/UpCommand';
+import DefaultCommand from './impl/DefaultCommand';
 
 function defaultCommandManager(): CommandManager {
   const commandManager = new CommandManager();
@@ -21,7 +22,7 @@ function defaultCommandManager(): CommandManager {
   commandManager.addCommand('dependencies', new DependenciesCommand());
   commandManager.addCommand('up', new UpCommand());
 
-  // commandManager.defaultCommand = new DefaultCommand(helpCommand);
+  commandManager.defaultCommand = new DefaultCommand();
 
   return commandManager;
 }

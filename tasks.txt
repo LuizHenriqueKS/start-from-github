@@ -1,5 +1,4 @@
-> Up command
-> Webhook
 > Default command
-> Test on Linux
+> Webhook
 > Test with private project
+> Test on Linux

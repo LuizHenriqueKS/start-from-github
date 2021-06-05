@@ -13,8 +13,9 @@ it('should download repository', async () => {
       url: 'https://github.com/LuizHenriqueKS/hello-world'
     });
     const result = await defaultCommandManager.run({
+      commandName: 'download',
       directory,
-      args: ['download']
+      args: []
     });
     expect(result.ok).toBeTruthy();
   } finally {

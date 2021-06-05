@@ -13,16 +13,18 @@ it('should install dependencies', async () => {
       url: 'https://github.com/LuizHenriqueKS/hello-world'
     });
     const result = await defaultCommandManager.run({
+      commandName: 'download',
       directory,
-      args: ['download']
+      args: []
     });
     expect(result.ok).toBeTruthy();
     const result2 = await defaultCommandManager.run({
+      commandName: 'dependencies',
       directory,
-      args: ['dependencies']
+      args: []
     });
     expect(result2.ok).toBeTruthy();
   } finally {
     await clearTestFiles();
   }
-});
+}, 10000);

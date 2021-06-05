@@ -13,9 +13,7 @@
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}\\src\\main.ts",
-      "args": [
-        "up"
-      ],
+      "args": [],
       "runtimeArgs": [
         "-r",
         "ts-node/register"

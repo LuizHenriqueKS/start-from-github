@@ -21,21 +21,17 @@ class CommandManager {
     this.#commandMap.set(name, cmdInfo);
   }
 
-  async run(rawArgs: CommandArgs): Promise<CommandResult> {
+  async run(args: CommandArgs): Promise<CommandResult> {
     let commandInfo: CommandInfo | undefined;
     try {
-      const commandName = rawArgs.args.length > 0 ? rawArgs.args[0] : '';
-      const args: CommandArgs = {
-        ...rawArgs,
-        args: [...rawArgs.args].slice(1)
-      };
+      const commandName = args.commandName;
       commandInfo = this.findCommandInfo(commandName);
       commandInfo = this.ifIsNullChangeToDefaultCommand(commandInfo);
       if (commandInfo) {
         await commandInfo.command.run(args);
         return { ok: true, commandInfo };
       }
-      throw new CommandNotFoundError(rawArgs.args);
+      throw new CommandNotFoundError(args.args);
     } catch (e) {
       return { ok: false, commandInfo, error: e };
     }
@@ -49,11 +45,13 @@ class CommandManager {
   }
 
   private findCommandInfo(name: string): CommandInfo | undefined {
-    for (const cmdInfo of this.#commandMap.values()) {
-      const cmdName = cmdInfo.name.split('-').join('');
-      const inName = name.split('-').join('');
-      if (cmdName.toLowerCase() === inName.toLowerCase()) {
-        return cmdInfo;
+    if (name) {
+      for (const cmdInfo of this.#commandMap.values()) {
+        const cmdName = cmdInfo.name.split('-').join('');
+        const inName = name.split('-').join('');
+        if (cmdName.toLowerCase() === inName.toLowerCase()) {
+          return cmdInfo;
+        }
       }
     }
     return undefined;

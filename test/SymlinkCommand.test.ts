@@ -24,14 +24,15 @@ it('should create symlinks', async () => {
     });
 
     const args = {
+      commandName: '',
       directory,
       args: []
     };
 
-    const result = await defaultCommandManager.run({ ...args, args: ['download'] });
+    const result = await defaultCommandManager.run({ ...args, commandName: 'download' });
     expect(result.ok).toBeTruthy();
 
-    const result2 = await defaultCommandManager.run({ ...args, args: ['symlink'] });
+    const result2 = await defaultCommandManager.run({ ...args, commandName: 'symlink' });
     expect(result2.ok).toBeTruthy();
 
     const testTxtContent = readDataTestTxt(args);
