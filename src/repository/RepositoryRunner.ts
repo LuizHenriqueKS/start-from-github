@@ -1,28 +1,43 @@
 import CommandArgs from '../cmd/CommandArgs';
 import RepositoryConfig from '../model/RepositoryConfig';
 import runTerminalCommandEx from '../terminal/runTerminalCommandEx';
+import TerminalCommand from '../terminal/TerminalCommand';
 import DependenciesInstaller from './DependenciesInstaller';
 import getDownloadedRepositoryDir from './getDownloadedRepositoryDir';
 import loadRepositoryVersion from './loadRepositoryVersion';
 import RepositoryDownloader from './RepositoryDownloader';
 import requireRepositoryVersionExists from './requireRepositoryVersionExists';
 import SymlinkMaker from './SymlinkMaker';
+import express from 'express';
+import * as http from 'http';
 
 class RepositoryRunner {
   readonly args: CommandArgs;
   readonly repositoryConfig: RepositoryConfig;
+  #terminalCommand?: TerminalCommand;
+  #webhook?: http.Server;
+  #restart: boolean;
 
   constructor(args: CommandArgs, repositoryConfig: RepositoryConfig) {
     this.args = args;
     this.repositoryConfig = repositoryConfig;
+    this.#restart = false;
   }
 
   async run(): Promise<void> {
-    await this.download();
-    await this.symlinks();
-    await this.installDependencies();
-    await this.runPreCommands();
-    await this.start();
+    try {
+      await this.startWebhook();
+      do {
+        this.#restart = false;
+        await this.download();
+        await this.symlinks();
+        await this.installDependencies();
+        await this.runPreCommands();
+        await this.start();
+      } while (this.#restart);
+    } finally {
+      await this.closeWebhook();
+    }
   }
 
   private async download() {
@@ -54,9 +69,38 @@ class RepositoryRunner {
     }
   }
 
+  private startWebhook(): Promise<void> {
+    return new Promise<void>(resolve => {
+      if (this.repositoryConfig.webhookPort) {
+        const app = express();
+        app.get('/close', () => {
+          this.#terminalCommand!.interrupt();
+        });
+        app.get('/update', () => {
+          this.#restart = true;
+          this.#terminalCommand!.interrupt();
+        });
+        this.#webhook = app.listen(this.repositoryConfig.webhookPort, () => {
+          console.log(`Webhook started with port ${this.repositoryConfig.webhookPort}.`);
+          resolve();
+        });
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  private closeWebhook(): Promise<void> {
+    return new Promise<void>(resolve => {
+      if (this.#webhook) {
+        this.#webhook.close(() => resolve());
+      }
+    });
+  }
+
   private async start() {
-    const terminalCommand = this.runStartCommand();
-    await terminalCommand.waitForClose();
+    this.#terminalCommand = this.runStartCommand();
+    await this.#terminalCommand.waitForClose();
   }
 
   private runStartCommand() {
