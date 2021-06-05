@@ -1,12 +1,12 @@
 {
   "name": "start-from-github",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Download, install dependences and start a nodeJS project from GitHub",
   "main": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "readme": "README.md",
   "bin": {
-    "start-from-github": "./dist/main.js"
+    "start-from-github": "./dist/startFromGithub.js"
   },
   "files": [
     "dist/*"
