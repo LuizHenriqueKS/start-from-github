@@ -32,11 +32,13 @@
   },
   "homepage": "https://github.com/LuizHenriqueKS/start-from-github#readme",
   "dependencies": {
+    "async-exit-hook": "^2.0.1",
     "axios": "^0.21.1",
     "express": "^4.17.1",
     "node-stream-zip": "^1.13.4",
     "tmp": "^0.2.1",
     "trash": "^7.1.1",
+    "tree-kill": "^1.2.2",
     "z-str": "^1.0.15"
   },
   "devDependencies": {

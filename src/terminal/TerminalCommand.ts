@@ -1,11 +1,17 @@
 import { ChildProcess } from 'child_process';
+import kill from 'tree-kill';
 
 class TerminalCommand {
   out?: (data: string) => void;
   #childProcess: ChildProcess;
+  #finished: boolean;
 
   constructor(childProcess: ChildProcess) {
     this.#childProcess = childProcess;
+    this.#finished = false;
+    this.#childProcess.once('exit', (code) => {
+      this.#finished = true;
+    });
   }
 
   redirectOutputsToConsole() {
@@ -30,14 +36,17 @@ class TerminalCommand {
 
   waitForClose(): Promise<void> {
     return new Promise<void>((resolve) => {
-      this.#childProcess.on('close', (code) => {
+      this.#childProcess.once('exit', (code) => {
         resolve();
       });
     });
   }
 
   interrupt() {
-    this.#childProcess.kill();
+    if (!this.#finished) {
+      const pid = this.#childProcess.pid;
+      kill(pid);
+    }
   }
 }
 

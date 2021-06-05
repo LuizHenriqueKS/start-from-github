@@ -34,6 +34,7 @@ class RepositoryRunner {
         await this.installDependencies();
         await this.runPreCommands();
         await this.start();
+        console.log('Exited');
       } while (this.#restart);
     } finally {
       await this.closeWebhook();
@@ -73,12 +74,14 @@ class RepositoryRunner {
     return new Promise<void>(resolve => {
       if (this.repositoryConfig.webhookPort) {
         const app = express();
-        app.get('/close', () => {
+        app.get('/close', (req, res) => {
           this.#terminalCommand!.interrupt();
+          res.send({ ok: true });
         });
-        app.get('/update', () => {
+        app.get('/update', (req, res) => {
           this.#restart = true;
           this.#terminalCommand!.interrupt();
+          res.send({ ok: true });
         });
         this.#webhook = app.listen(this.repositoryConfig.webhookPort, () => {
           console.log(`Webhook started with port ${this.repositoryConfig.webhookPort}.`);
@@ -90,12 +93,10 @@ class RepositoryRunner {
     });
   }
 
-  private closeWebhook(): Promise<void> {
-    return new Promise<void>(resolve => {
-      if (this.#webhook) {
-        this.#webhook.close(() => resolve());
-      }
-    });
+  private async closeWebhook(): Promise<void> {
+    if (this.#webhook) {
+      this.#webhook.close();
+    }
   }
 
   private async start() {

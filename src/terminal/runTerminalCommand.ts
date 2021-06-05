@@ -3,6 +3,8 @@ import TerminalCommandOptions from './TerminalCommandOptions';
 import isOSWindows from '../util/isOSWindows';
 import TerminalCommand from './TerminalCommand';
 
+const onExit = require('async-exit-hook');
+
 function runTerminalCommand(command: string, options?: TerminalCommandOptions): TerminalCommand {
   const args = options ? options.args : [];
   const cwd = options ? options.cwd : undefined;
@@ -10,6 +12,7 @@ function runTerminalCommand(command: string, options?: TerminalCommandOptions): 
   const terminalCommand = new TerminalCommand(childProcess);
   terminalCommand.redirectOutputsToConsole();
   terminalCommand.out = options?.out;
+  onExit(() => terminalCommand.interrupt());
   return terminalCommand;
 }
 
