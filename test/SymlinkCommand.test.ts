@@ -12,6 +12,7 @@ import fs from 'fs';
 
 it('should create symlinks', async () => {
   try {
+    await clearTestFiles();
     const directory = getTestFilesDirectory();
 
     const symlinks = buildSymlinks();

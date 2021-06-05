@@ -6,6 +6,7 @@ import clearTestFiles from './clearTestFiles';
 
 it('should download repository', async () => {
   try {
+    await clearTestFiles();
     const directory = getTestFilesDirectory();
     writeJSONFile(getRepositoryConfigPath(), {
       name: 'hello-world',
