@@ -4,11 +4,11 @@ import getTestFilesDirectory from './getTestFilesDirectory';
 import getRepositoryConfigPath from './getRepositoryConfigPath';
 import path from 'path';
 import clearTestFiles from './clearTestFiles';
-import loadRepositoryConfig from '../src/repository/loadRepositoryConfig';
 import loadRepositoryVersion from '../src/repository/loadRepositoryVersion';
 import getDownloadedRepositoryDir from '../src/repository/getDownloadedRepositoryDir';
 import CommandArgs from '../src/cmd/CommandArgs';
 import fs from 'fs';
+import loadRepositoryConfigFromArgs from '../src/repository/loadRepositoryConfigFromArgs';
 
 it('should create symlinks', async () => {
   try {
@@ -50,7 +50,7 @@ function buildSymlinks(): Record<string, string>[] {
 }
 
 function readDataTestTxt(args: CommandArgs): string {
-  const repositoryConfig = loadRepositoryConfig(args, 'repository.json');
+  const repositoryConfig = loadRepositoryConfigFromArgs(args);
   const repositoryVersion = loadRepositoryVersion(args, repositoryConfig);
   const repositoryDirectory = getDownloadedRepositoryDir(args.directory, repositoryVersion!);
   const testTxt = path.join(repositoryDirectory, 'data', 'test.txt');

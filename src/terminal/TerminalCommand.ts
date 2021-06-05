@@ -8,13 +8,17 @@ class TerminalCommand {
   }
 
   redirectOutputsToConsole() {
-    this.#childProcess.stdout.on('data', (data) => {
-      console.log(`${data}`);
-    });
+    if (this.#childProcess.stdout) {
+      this.#childProcess.stdout.on('data', (data) => {
+        console.log(`${data}`);
+      });
+    }
 
-    this.#childProcess.stderr.on('data', (data) => {
-      console.error(`${data}`);
-    });
+    if (this.#childProcess.stderr) {
+      this.#childProcess.stderr.on('data', (data) => {
+        console.error(`${data}`);
+      });
+    }
 
     this.#childProcess.on('error', (error) => {
       console.error(`${error.message}`);

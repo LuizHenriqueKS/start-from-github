@@ -1,28 +1,27 @@
 import fs from 'fs';
 import CommandArgs from '../cmd/CommandArgs';
 import joinPath from '../util/joinPath';
-import loadRepositoryConfig from './loadRepositoryConfig';
 import loadRepositoryVersion from './loadRepositoryVersion';
 import getDownloadedRepositoryDir from './getDownloadedRepositoryDir';
 import requireRepositoryVersionExists from './requireRepositoryVersionExists';
+import RepositoryConfig from '../model/RepositoryConfig';
 
 class SymlinkMaker {
   readonly args: CommandArgs;
-  readonly filename: string;
+  readonly repositoryConfig: RepositoryConfig;
 
-  constructor(args: CommandArgs, filename?: string) {
+  constructor(args: CommandArgs, repositoryConfig: RepositoryConfig) {
     this.args = args;
-    this.filename = filename || 'repository.json';
+    this.repositoryConfig = repositoryConfig;
   }
 
   async make(): Promise<void> {
     console.log('Creating symlinks...');
-    const repositoryConfig = loadRepositoryConfig(this.args, this.filename);
-    requireRepositoryVersionExists(this.args.directory, repositoryConfig);
-    const repositoryVersion = loadRepositoryVersion(this.args, repositoryConfig);
+    requireRepositoryVersionExists(this.args.directory, this.repositoryConfig);
+    const repositoryVersion = loadRepositoryVersion(this.args, this.repositoryConfig);
     const repositoryDirectory = getDownloadedRepositoryDir(this.args.directory, repositoryVersion!);
-    if (repositoryConfig.symlinks) {
-      for (const symlinks of repositoryConfig.symlinks) {
+    if (this.repositoryConfig.symlinks) {
+      for (const symlinks of this.repositoryConfig.symlinks) {
         for (const entry of Object.entries(symlinks)) {
           const source: string = entry[0];
           const destination: any = entry[1];

@@ -1,26 +1,25 @@
 import CommandArgs from '../cmd/CommandArgs';
 import getDownloadedRepositoryDir from './getDownloadedRepositoryDir';
-import loadRepositoryConfig from './loadRepositoryConfig';
 import loadRepositoryVersion from './loadRepositoryVersion';
 import requireRepositoryVersionExists from './requireRepositoryVersionExists';
 import path from 'path';
 import fs from 'fs';
 import runTerminalCommand from '../terminal/runTerminalCommand';
+import RepositoryConfig from '../model/RepositoryConfig';
 
 class DependenciesInstaller {
   readonly args: CommandArgs;
-  readonly filename: string;
+  readonly repositoryConfig: RepositoryConfig;
 
-  constructor(args: CommandArgs, filename?: string) {
+  constructor(args: CommandArgs, repositoryConfig: RepositoryConfig) {
     this.args = args;
-    this.filename = filename || 'repository.json';
+    this.repositoryConfig = repositoryConfig;
   }
 
   async install(): Promise<void> {
     console.log('Checking dependencies...');
-    const repositoryConfig = loadRepositoryConfig(this.args, this.filename);
-    requireRepositoryVersionExists(this.args.directory, repositoryConfig);
-    const repositoryVersion = loadRepositoryVersion(this.args, repositoryConfig);
+    requireRepositoryVersionExists(this.args.directory, this.repositoryConfig);
+    const repositoryVersion = loadRepositoryVersion(this.args, this.repositoryConfig);
     const repositoryDirectory = getDownloadedRepositoryDir(this.args.directory, repositoryVersion!);
     const dependenciesDirectory = path.join(repositoryDirectory, 'node_modules');
     if (!fs.existsSync(dependenciesDirectory)) {

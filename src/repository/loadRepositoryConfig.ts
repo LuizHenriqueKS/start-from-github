@@ -1,17 +1,16 @@
 import getRespositoryData from './getRepositoryData';
-import CommandArgs from '../cmd/CommandArgs';
 import RepositoryConfig from '../model/RepositoryConfig';
 import joinPath from '../util/joinPath';
 import readJSONFile from '../util/readJSONFile';
 
-function loadRepositoryConfig(args: CommandArgs, filename: string): RepositoryConfig {
+function loadRepositoryConfig(directory: string, filename: string): RepositoryConfig {
   if (filename.startsWith('http://') || filename.startsWith('https://')) {
     return {
       name: getRepositoryName(filename),
       url: filename
     };
   } else {
-    return readRepositoryConfig(args, filename);
+    return readRepositoryConfig(directory, filename);
   }
 }
 
@@ -19,8 +18,8 @@ function getRepositoryName(url: string): string {
   return getRespositoryData(url).name;
 }
 
-function readRepositoryConfig(args: CommandArgs, filename: string): RepositoryConfig {
-  const path = joinPath(args.directory, filename);
+function readRepositoryConfig(directory: string, filename: string): RepositoryConfig {
+  const path = joinPath(directory, filename);
   const config = readJSONFile(path);
   fixSymlink(config);
   return config;

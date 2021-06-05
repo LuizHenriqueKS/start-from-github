@@ -1,7 +1,6 @@
 import CommandArgs from '../cmd/CommandArgs';
 import RepositoryConfig from '../model/RepositoryConfig';
 import deleteDownloadedRepository from './deleteDownloadedRepository';
-import loadRepositoryConfig from './loadRepositoryConfig';
 import requestOnlineRepositoryVersion from './requestOnlineRepositoryVersion';
 import writeRepositoryVersion from './writeRepositoryVersion';
 import loadRepositoryVersion from './loadRepositoryVersion';
@@ -20,24 +19,23 @@ import getDownloadedRepositoryDir from './getDownloadedRepositoryDir';
 
 class RepositoryDownloader {
   readonly args: CommandArgs;
-  readonly filename: string;
+  readonly repositoryConfig: RepositoryConfig;
 
-  constructor(args: CommandArgs, filename?: string) {
+  constructor(args: CommandArgs, repositoryConfig: RepositoryConfig) {
     this.args = args;
-    this.filename = filename || 'repository.json';
+    this.repositoryConfig = repositoryConfig;
   }
 
   async download(): Promise<void> {
-    const repositoryConfig = loadRepositoryConfig(this.args, this.filename);
-    const repositoryVersion = await requestOnlineRepositoryVersion(repositoryConfig);
-    const downloadedRepositoryVersion = loadRepositoryVersion(this.args, repositoryConfig);
+    const repositoryVersion = await requestOnlineRepositoryVersion(this.repositoryConfig);
+    const downloadedRepositoryVersion = loadRepositoryVersion(this.args, this.repositoryConfig);
     const repositoryVersionStatus = this.getRepositoryVersionStatus(repositoryVersion, downloadedRepositoryVersion);
     if (RepositoryVersionStatus.UP_TO_DATE === repositoryVersionStatus) {
-      console.info(`The local files of '${repositoryConfig.name}' is up to date.`);
+      console.info(`The local files of '${this.repositoryConfig.name}' is up to date.`);
     } else {
-      this.printRepositoryVersionStatus(repositoryConfig, repositoryVersionStatus);
+      this.printRepositoryVersionStatus(this.repositoryConfig, repositoryVersionStatus);
       await this.deleteDownloadedRepositoryIfExists(downloadedRepositoryVersion);
-      await this.downloadLatestVersion(repositoryConfig, repositoryVersion);
+      await this.downloadLatestVersion(this.repositoryConfig, repositoryVersion);
       writeRepositoryVersion(this.args.directory, repositoryVersion);
     }
   }
